@@ -11,9 +11,8 @@ from sklearn.cluster import KMeans
 from sklearn import svm
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
-from nltk.tokenize import word_tokenize
-Size = 26709
-from cleaner import cleaner
 
+import re
+Size = 26709
 
 

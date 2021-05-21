@@ -12,10 +12,19 @@ from sklearn import svm
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import os
-from Read_Data import Read_Data_From_File
+from function import Read_Data_From_File,make_idf,tf_idf_lexicon
 
 def main():
-   Read_Data_From_File()
+   lexicon = Read_Data_From_File()
+   # print(lexicon)
+   # print(len(lexicon))
+   idf = make_idf(lexicon)
+   # print(len(idf))
+   # print(idf)
+   tf_idf = tf_idf_lexicon(lexicon,idf)
+   # print(tf_idf)
+   # print(len(tf_idf))
+   # print(tf_idf.keys())
     
         
 if __name__ == "__main__":
