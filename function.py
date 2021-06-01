@@ -67,23 +67,26 @@ def Read_Data_From_File():
         words = word_tokenize(X_headline[i])
         curr = str(i)
         for word in words:
-            if len(word) > 2:
+            if len(word) >= 3:
                 if word in stop_word:
                     continue
-                word = cleaner(word)
-                Tokens.append(word)
+                taggs = nltk.tag.pos_tag(word)
+                if(taggs[0][1] != 'NNP' and taggs[0][1] != 'FW' and taggs[0][1] != 'PRP'):
+                    word = cleaner(word)
+                    if len(word) >= 3:                 
+                        Tokens.append(word)
 
-                if word in lexicon:
-                    if curr in lexicon[word]:
-                        lexicon[word][i] += 1
-                    else:
-                        lexicon[word][i] = 1
-                else:
-                    lexicon[word] = {}
-                    if curr in lexicon[word]:
-                        lexicon[word][i] += 1
-                    else:
-                        lexicon[word][i] = 1
+                        if word in lexicon:
+                            if curr in lexicon[word]:
+                                lexicon[word][i] += 1
+                            else:
+                                lexicon[word][i] = 1
+                        else:
+                            lexicon[word] = {}
+                            if curr in lexicon[word]:
+                                lexicon[word][i] += 1
+                            else:
+                                lexicon[word][i] = 1
         i = i+1
     global Size 
     Size = count
