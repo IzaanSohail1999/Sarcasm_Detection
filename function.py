@@ -88,7 +88,7 @@ def Read_Data_From_File():
                             else:
                                 lexicon[word][i] = 1
         i = i+1
-        print(lexicon)
+        # print(lexicon)
     global Size 
     Size = count
     return lexicon
@@ -119,85 +119,6 @@ def applyPCA(df):
 
     return x_pca, scaled_data
 
-def Read_Data_From_File1():
-    global Size
-    Tokens = []
-    alpha = ''
-    Raw_Data = dict()
-    X_headline = []
-    Y_Sarcastic = []
-    i = 0
-    count = 0
-    lexicon = {}
-
-    stop_word = []
-    with open("Stopword-List.txt", 'r') as stop:
-        for line in stop:
-            temp = line.strip()
-            stop_word.append(temp)
-
-    for lines in open('Sarcasm_Headlines_Dataset.json', 'r'):
-        if count == 2:
-            break
-        count += 1
-        Raw_Data[i] = json.loads(lines)
-        X_headline.append(Raw_Data[i]["headline"])
-        Y_Sarcastic.append(Raw_Data[i]["is_sarcastic"])
-
-        #tokenize here
-        words = word_tokenize(X_headline[i])
-        curr = str(i)
-        for word in words:
-            if len(word) >= 3:
-                if word in stop_word:
-                    continue
-                taggs = nltk.tag.pos_tag(word)
-                if(taggs[0][1] != 'NNP' and taggs[0][1] != 'FW' and taggs[0][1] != 'PRP'):
-                    word = cleaner(word)
-                    if len(word) >= 3:
-                        # print(i,word)
-                        Tokens.append(tuple((i,word)))
-
-                        # if word in lexicon:
-                        #     if curr in lexicon[i]:
-                        #         lexicon[i][word] += 1
-                        #     else:
-                        #         lexicon[i][word] = 1
-                        # else:
-                        #     lexicon[i] = {}
-                        #     if curr in lexicon[i]:
-                        #         lexicon[i][word] += 1
-                        #     else:
-                        #         lexicon[i][word] = 1
-        i = i+1
-    for i in range(2):
-        for x in Tokens:
-            if i in lexicon:
-                if x[1] in lexicon[i]:
-                    if i == x[0]:
-                        lexicon[i][x[1]] += 1
-                    else:
-                        lexicon[i][x[1]] = 0
-                else:
-                    if i == x[0]:
-                        lexicon[i][x[1]] = 1
-                    else:
-                        lexicon[i][x[1]] = 0
-            else:
-                lexicon[i] = {}
-                if x[1] in lexicon[i]:
-                    if i == x[0]:
-                        lexicon[i][x[1]] += 1
-                    else:
-                        lexicon[i][x[1]] = 0
-                else:
-                    if i == x[0]:
-                        lexicon[i][x[1]] = 1
-                    else:
-                        lexicon[i][x[1]] = 0
-
-    Size = count
-    return lexicon,Tokens
 
 def sort(tfidf):
     size = 26709
