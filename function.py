@@ -74,7 +74,7 @@ def Read_Data_From_File():
                 if(taggs[0][1] != 'NNP' and taggs[0][1] != 'FW' and taggs[0][1] != 'PRP'):
                     word = cleaner(word)
                     if len(word) >= 3:                 
-                        Tokens.append(word)
+                        # Tokens.append(word)
 
                         if word in lexicon:
                             if curr in lexicon[word]:
@@ -88,6 +88,7 @@ def Read_Data_From_File():
                             else:
                                 lexicon[word][i] = 1
         i = i+1
+        # print(lexicon)
     global Size 
     Size = count
     return lexicon
@@ -100,3 +101,53 @@ def tf_idf_lexicon(lexicon, idf):
             tf_idf[term][docNo] = tf * idf[term]
 
     return tf_idf
+
+def applyPCA(df):
+    print("In function")
+    scaler = StandardScaler()
+    #scaler=MinMaxScaler()
+    print("Standard scaler defined")
+    scaler.fit(df)
+    print("scaler Fit defined")
+    scaled_data = scaler.transform(df)
+    print("scaler trasnform")
+
+    pca = PCA(n_components=900)
+    pca.fit(scaled_data)
+    x_pca = pca.transform(scaled_data)
+    print("Data Variance: ", sum(pca.explained_variance_ratio_)*100)
+
+    return x_pca, scaled_data
+
+
+def sort(tfidf):
+    size = 26709
+    list1 = []
+    check = False
+    for i in range(size):
+        list1.append(i+1)
+    # print(list1)
+    
+    for word,doc in tfidf.items():
+        print(word)
+        for i in list1:
+            if i not in doc.keys():
+                tfidf[word][i] = 0
+    return tfidf
+
+def make_idf1(Tokens):
+    list1 = []
+    idf = dict()
+    global Size
+    N = Size
+    # for term,docs in lexicon.items():
+    #     df = len(docs)
+    #     temp = math.log(N / df)
+    #     idf[term] = temp
+    # return idf
+    for i in Tokens:
+        # print(i[0],i[1])        
+        count =  i[0]
+        while i[0]+1 == count:
+             list1.append(Tokens[i[1]])
+    print(list1)
